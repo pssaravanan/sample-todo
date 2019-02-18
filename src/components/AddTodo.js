@@ -7,7 +7,7 @@ export default class AddTodo extends Component {
   }
   onKeyPress(e){
     if(e.key == 'Enter'){
-      this.props.onAdd(e.target.value)
+      this.props.onAdd({text: e.target.value, completed: false})
       this.setState({value: ''})
     }
   }
