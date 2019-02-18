@@ -1,25 +1,36 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Todo from './Todo'
+import AddTodo from './AddTodo'
 
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {todos: []}
+  }
+  onAdd(text){
+    let todos = [{text: text, completed: false}, ...this.state.todos]
+    this.setState({todos: todos})
+  }
+  toggleTodo(index){
+    let todos = this.state.todos.map((todo, i) => {
+      if(i == index){
+        return {...todo, ...{completed: !todo.completed}}
+      }else{
+        return todo
+      }
+    })
+    this.setState({todos: todos})
+  }
   render() {
+    let todos = this.state.todos.map((todo, i) => {
+      return (<Todo key={i} index={i} toggleTodo={this.toggleTodo.bind(this)} {...todo}/>)
+    })
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <AddTodo onAdd={this.onAdd.bind(this)}/>
+        {todos}
       </div>
     );
   }
